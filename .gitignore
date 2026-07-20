@@ -1,0 +1,18 @@
+# Virtual environment
+venv/
+.venv/
+
+# Local cache & logs
+__pycache__/
+.pytest_cache/
+logs/
+
+# Massive raw data files (Do NOT push these to GitHub)
+data/raw/
+data/processed/
+
+# Keep vector store configs but ignore massive indices if they are too big 
+# (Streamlit Cloud needs the FAISS files, so don't ignore data/vector_store/)
+
+# Local environment keys
+.env
