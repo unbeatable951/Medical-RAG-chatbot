@@ -16,3 +16,30 @@ data/processed/
 
 # Local environment keys
 .env
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Raw & Intermediate Large Datasets
+data/raw/
+data/processed/
+logs/
+
+# Sensitive API Keys
+.env
+
+# OS / IDE Junk
+.DS_Store
+.vscode/
+.idea/
+
+# Personal Notes & Interview Guides
+improvement_plan.md
+medical_rag_interview_guide.md

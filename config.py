@@ -19,11 +19,10 @@ LOG_DIR = os.path.join(BASE_DIR, "logs")
 
 MEDQUAD_DIR = os.path.join(RAW_DIR, "MedQuAD")
 MEDLINEPLUS_DIR = os.path.join(RAW_DIR, "MedlinePlus")
-PMC_DIR = os.path.join(RAW_DIR, "PMC_OA")
 WHO_DIR = os.path.join(RAW_DIR, "WHO")
 CDC_DIR = os.path.join(RAW_DIR, "CDC")
 
-ALL_RAW_DIRS = [MEDQUAD_DIR, MEDLINEPLUS_DIR, PMC_DIR, WHO_DIR, CDC_DIR]
+ALL_RAW_DIRS = [MEDQUAD_DIR, MEDLINEPLUS_DIR, WHO_DIR, CDC_DIR]
 
 # ---------------------------------------------------------------------------
 # Dataset source configuration
@@ -37,23 +36,6 @@ MEDLINEPLUS_XML_INDEX_URL = "https://medlineplus.gov/xml.html"
 MEDLINEPLUS_FALLBACK_TOPICS_URL = (
     "https://medlineplus.gov/xml/mplus_topics_compressed.xml"
 )
-
-# PubMed Central Open Access Subset — NCBI E-utilities + OA Web Service
-PMC_EUTILS_ESEARCH = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
-PMC_OA_SERVICE = "https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi"
-# Search terms used to pull a representative, disease/medicine/symptom-focused
-# slice of the PMC Open Access subset (commercial-use-allowed licenses only).
-PMC_SEARCH_TERMS = [
-    "diabetes mellitus review",
-    "hypertension management review",
-    "asthma treatment review",
-    "influenza symptoms review",
-    "antibiotic therapy review",
-    "cardiovascular disease prevention review",
-    "cancer screening guidelines review",
-    "mental health disorders review",
-]
-PMC_MAX_ARTICLES_PER_TERM = 15  # keep the demo corpus small & fast; raise for production
 
 # WHO IRIS (DSpace 7) REST API — CC BY-NC-SA 3.0 IGO
 WHO_IRIS_SEARCH_API = "https://iris.who.int/server/api/discover/search/objects"
@@ -80,13 +62,13 @@ CDC_OPEN_DATA_DATASETS = {
     "flu_vaccination_coverage": "vh55-3he6",
 }
 CDC_HEALTH_TOPIC_PAGES = [
-    "https://www.cdc.gov/diabetes/basics/index.html",
-    "https://www.cdc.gov/bloodpressure/index.htm",
-    "https://www.cdc.gov/asthma/default.htm",
-    "https://www.cdc.gov/flu/index.htm",
-    "https://www.cdc.gov/heartdisease/index.htm",
-    "https://www.cdc.gov/cancer/index.htm",
-    "https://www.cdc.gov/mentalhealth/index.htm",
+    "https://www.cdc.gov/diabetes/about/index.html",
+    "https://www.cdc.gov/high-blood-pressure/about/index.html",
+    "https://www.cdc.gov/asthma/about/index.html",
+    "https://www.cdc.gov/flu/index.html",
+    "https://www.cdc.gov/heart-disease/about/index.html",
+    "https://www.cdc.gov/cancer/index.html",
+    "https://www.cdc.gov/mental-health/about/index.html",
     "https://www.cdc.gov/vaccines/index.html",
 ]
 
