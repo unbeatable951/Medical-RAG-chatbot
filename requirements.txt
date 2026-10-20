@@ -1,3 +1,4 @@
+
 requests>=2.31
 tqdm>=4.66
 beautifulsoup4>=4.12
@@ -8,3 +9,4 @@ sentence-transformers>=3.0.0
 faiss-cpu>=1.8.0
 streamlit>=1.35.0
 groq>=0.9.0
+python-dotenv>=1.0.0
