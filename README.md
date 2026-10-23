@@ -11,7 +11,7 @@ pinned: false
 # 🩺 End-to-End Medical RAG Chatbot
 https://medical-rag-chatbot-2p7v.onrender.com/
 
-A production-grade Retrieval-Augmented Generation (RAG) chatbot built from trusted medical knowledge bases (**MedQuAD** & **MedlinePlus**). The pipeline leverages **FAISS** for fast local vector retrieval, **Groq** for high-performance LLM generation, and an interactive **Streamlit** chat interface with explicit source citation tracking.
+A production-grade Retrieval-Augmented Generation (RAG) chatbot built from trusted medical knowledge bases (**MedQuAD** & **MedlinePlus**). The pipeline leverages **FAISS** for fast local vector retrieval, **Groq** for high-performance LLM generation, and an interactive **Streamlit** chat interface with explicit source citation tracking..
 
 ---
 
