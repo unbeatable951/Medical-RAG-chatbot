@@ -167,9 +167,10 @@ with gr.Blocks(title=PAGE_TITLE) as demo:
 
     chatbot = gr.Chatbot(
         label="Conversation",
-        type="messages",
         height=480
     )
+
+    
 
     with gr.Row():
         message = gr.Textbox(
