@@ -1,5 +1,7 @@
+
 import time
 import gradio as gr
+import spaces
 
 from generation.rag_chain import MedicalRAGChain
 
@@ -9,13 +11,25 @@ from generation.rag_chain import MedicalRAGChain
 # ---------------------------------------------------------
 
 PAGE_TITLE = "Medical RAG Chatbot"
-PAGE_ICON = "🩺"
 
 rag_chain = None
 
 
 # ---------------------------------------------------------
-# RAG INITIALIZATION — LOAD ONLY ONCE PER PROCESS
+# ZEROGPU COMPATIBILITY
+# ---------------------------------------------------------
+
+@spaces.GPU(duration=10)
+def zerogpu_check():
+    """
+    Minimal ZeroGPU compatibility handler.
+    This function does not perform medical inference.
+    """
+    return "ZeroGPU handler registered."
+
+
+# ---------------------------------------------------------
+# RAG INITIALIZATION
 # ---------------------------------------------------------
 
 def load_rag_chain():
@@ -32,7 +46,7 @@ def load_rag_chain():
 # ---------------------------------------------------------
 
 def format_sources(sources):
-    """Format retrieved documents for an expandable source panel."""
+    """Format retrieved documents for the source panel."""
 
     if not sources:
         return "No source documents were returned for this response."
@@ -45,11 +59,13 @@ def format_sources(sources):
         score = src.get("score")
 
         score_text = (
-            f"{score:.4f}" if isinstance(score, (int, float))
+            f"{score:.4f}"
+            if isinstance(score, (int, float))
             else "Unavailable"
         )
 
         excerpt = (src.get("text") or "").strip()
+
         if len(excerpt) > 300:
             excerpt = excerpt[:300] + "..."
 
@@ -64,7 +80,7 @@ def format_sources(sources):
 
 
 def format_answer(answer, sources, elapsed, model_used):
-    """Keep citations alongside each answer in conversation history."""
+    """Format the answer and its source citations."""
 
     result = answer or "No answer was returned."
 
@@ -91,23 +107,20 @@ def format_answer(answer, sources, elapsed, model_used):
 
 def respond(message, history):
     """
-    Gradio supplies the conversation history.
-    Like the original Streamlit app, the RAG pipeline receives
-    the current question rather than the entire conversation.
+    Process the current question through the existing RAG pipeline.
+    Conversation history is displayed but is not passed to the RAG chain.
     """
 
     message = (message or "").strip()
+    updated_history = list(history or [])
 
     if not message:
         return (
-            history or [],
+            updated_history,
             "Enter a question to begin.",
             ""
         )
 
-    updated_history = list(history or [])
-
-    # Display the user message immediately in the conversation.
     updated_history.append({
         "role": "user",
         "content": message
@@ -132,7 +145,6 @@ def respond(message, history):
         source_panel = format_sources(sources)
 
     except Exception:
-        # Avoid exposing API keys, internal paths, or raw exceptions.
         answer = (
             "Sorry, I couldn't process this question. "
             "Please try again later. If the problem persists, "
@@ -165,12 +177,26 @@ with gr.Blocks(title=PAGE_TITLE) as demo:
         "provide a diagnosis or replace professional medical care."
     )
 
-    chatbot = gr.Chatbot(
-        label="Conversation",
-        height=480
+    # Register a ZeroGPU-decorated event handler.
+    # The hidden button is not triggered automatically.
+    zerogpu_button = gr.Button(
+        "ZeroGPU compatibility handler",
+        visible=False
     )
 
-    
+    zerogpu_status = gr.Textbox(visible=False)
+
+    zerogpu_button.click(
+        fn=zerogpu_check,
+        inputs=[],
+        outputs=[zerogpu_status]
+    )
+
+    chatbot = gr.Chatbot(
+        label="Conversation",
+        type="messages",
+        height=480
+    )
 
     with gr.Row():
         message = gr.Textbox(
@@ -205,8 +231,7 @@ with gr.Blocks(title=PAGE_TITLE) as demo:
         inputs=message
     )
 
-    # Both Enter and the Send button submit a question.
-    submit_event = message.submit(
+    message.submit(
         fn=respond,
         inputs=[message, chatbot],
         outputs=[chatbot, sources_panel, message]
@@ -219,19 +244,21 @@ with gr.Blocks(title=PAGE_TITLE) as demo:
     )
 
     clear.click(
-        fn=lambda: ([], "Sources will appear here after your next question.", ""),
+        fn=lambda: (
+            [],
+            "Sources will appear here after your next question.",
+            ""
+        ),
         inputs=[],
         outputs=[chatbot, sources_panel, message]
     )
 
-    # Queue requests so concurrent users don't trigger excessive
-    # simultaneous model initializations on a small CPU instance.
     demo.queue(default_concurrency_limit=1)
 
 
 if __name__ == "__main__":
     demo.launch()
-    
+
 
 # import streamlit as st
 # import time
