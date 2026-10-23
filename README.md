@@ -1,3 +1,13 @@
+---
+title: Medical RAG Chatbot
+emoji: 🩺
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🩺 End-to-End Medical RAG Chatbot
 https://medical-rag-chatbot-2p7v.onrender.com/
 
